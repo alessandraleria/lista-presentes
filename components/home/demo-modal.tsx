@@ -112,7 +112,7 @@ export function useDemoModal({ title }: { title: string }) {
         title={title}
       />
     );
-  }, [showDemoModal, setShowDemoModal]);
+  }, [showDemoModal, setShowDemoModal, title]);
 
   return useMemo(
     () => ({ setShowDemoModal, DemoModal: DemoModalCallback }),
