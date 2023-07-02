@@ -3,22 +3,34 @@ import Balancer from "react-wrap-balancer";
 import Image from "next/image";
 
 export default async function Home() {
-  const response = await fetch('http://localhost:3001/api/gifts', { cache: 'no-store' });
+  const response = await fetch("http://localhost:3001/api/gifts", {
+    cache: "no-store",
+  });
   const data = await response.json();
-  const gifts : any = [];
+  const gifts: any = [];
 
-  data.map((gift : any) => {gifts.push({
-    id: gift.id,
-    name: gift.name,
-    link: `[${gift.link_placeholder}](${gift.link})`,
-    price: gift.price ,
-    demo: (
-      <div className="flex items-center justify-center space-x-20">
-        <Image alt={gift.name} src={gift.image} width={350} height={350} />
-      </div>
-    ),
-    selected: Boolean(gift.guest),
-    description: gift.description
+  data.map((gift: any) => {
+    gifts.push({
+      id: gift.id,
+      name: gift.name,
+      link: `[${gift.link_placeholder}](${gift.link})`,
+      price: gift.price,
+      demo: (
+        <div
+          className="flex items-center justify-center space-x-20"
+          style={{ height: "100%" }}
+        >
+          <Image
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            alt={gift.name}
+            src={gift.image}
+            width={350}
+            height={350}
+          />
+        </div>
+      ),
+      selected: Boolean(gift.guest),
+      description: gift.description,
     });
   });
 
@@ -37,14 +49,21 @@ export default async function Home() {
         </h1>
         <p
           className="mt-6 animate-fade-up text-center text-gray-500 opacity-0 md:text-xl"
-          style={{ animationDelay: "0.25s", animationFillMode: "forwards", textAlign: "justify" }}
+          style={{
+            animationDelay: "0.25s",
+            animationFillMode: "forwards",
+            textAlign: "justify",
+          }}
         >
           <Balancer>
-          Estamos felizes em compartilhar esse momento com você! 
-          Como você sabe, nós moramos juntos há um tempo e por isso nossa lista de presentes não tem tantos itens como uma lista comum.
-          Se quiser dar um presente, só nos indicar, mas caso queira ajudar com algum valor, estamos deixando nosso pix.
-          Esperamos não criar nenhum desconforto por aí, então não se preocupem em dar qualquer quantia que vá atrapalhar sua vida financeira. 
-          O mais importante é ter você com a gente!
+            Estamos felizes em compartilhar esse momento com você! Como você
+            sabe, nós moramos juntos há um tempo e por isso nossa lista de
+            presentes não tem tantos itens como uma lista comum. Se quiser dar
+            um presente, só nos indicar, mas caso queira ajudar com algum valor,
+            estamos deixando nosso pix. Esperamos não criar nenhum desconforto
+            por aí, então não se preocupem em dar qualquer quantia que vá
+            atrapalhar sua vida financeira. O mais importante é ter você com a
+            gente!
           </Balancer>
         </p>
 
