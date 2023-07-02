@@ -5,19 +5,23 @@ import Balancer from "react-wrap-balancer";
 import { useDemoModal } from "./demo-modal";
 
 export default function Card({
+  id,
   title,
   link,
   price,
   demo,
   selected,
+  description,
 }: {
+  id: number,
   title: string;
   link: string;
   price: string;
   demo: ReactNode;
   selected: boolean;
+  description: string;
 }) {
-  const { DemoModal, setShowDemoModal } = useDemoModal({ title });
+  const { DemoModal, setShowDemoModal } = useDemoModal({ title, id });
   return (
     <div
       className={`relative col-span-1 overflow-hidden rounded-xl bg-white shadow-md`}
@@ -36,8 +40,26 @@ export default function Card({
           <Balancer>{title}</Balancer>
         </h2>
         <h2 className="bg-gradient-to-br from-black to-stone-500 bg-clip-text px-1 pt-3 font-display text-xl font-bold text-transparent md:text-2xl md:font-normal">
-          <Balancer>{price}</Balancer>
+          <Balancer>R${parseFloat(price).toFixed(2).replace('.', ',')}</Balancer>
         </h2>
+        <div className="prose-sm leading-normal text-gray-500 md:prose">
+          <Balancer>
+            <ReactMarkdown
+              components={{
+                a: ({ node, ...props }) => (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    {...props}
+                    className="font-medium text-gray-800 underline transition-colors"
+                  />
+                ),
+              }}
+            >
+              {description}
+            </ReactMarkdown>
+          </Balancer>
+        </div>
         <div className="prose-sm leading-normal text-gray-500 md:prose">
           <Balancer>
             <ReactMarkdown

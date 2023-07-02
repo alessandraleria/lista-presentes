@@ -12,16 +12,31 @@ const DemoModal = ({
   showDemoModal,
   setShowDemoModal,
   title,
+  id,
 }: {
   showDemoModal: boolean;
   setShowDemoModal: Dispatch<SetStateAction<boolean>>;
   title: string;
+  id: number;
 }) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const onClickConfirmButton = () => {
-    //IMPLEMENTA SUBMISSAO PRA API
+  const [name, setName] = useState('');
+
+  const onClickConfirmButton = async (id: number) => {
+    const response = await fetch(`http://localhost:3001/api/gifts/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({guest: name})
+    });
     setIsConfirmed(!isConfirmed);
   };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value); // Atualizar o estado com o valor do input
+  };
+
   return (
     <Modal showModal={showDemoModal} setShowModal={setShowDemoModal}>
       {isConfirmed ? (
@@ -44,9 +59,7 @@ const DemoModal = ({
                   </svg>
                   <p>
                     <Balancer>
-                      Caso desista de dar o presente, por favor entre em contato
-                      com os noivos para que possam disponibilizá-lo novamente
-                      no site
+                      Caso desista de dar o presente, por favor nos avise para que possamos libera-lo novamente!
                     </Balancer>
                   </p>
                 </div>
@@ -81,6 +94,7 @@ const DemoModal = ({
                 id="name"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                 placeholder="Nome Completo"
+                onChange={handleInputChange}
                 required
               ></input>
             </div>
@@ -89,7 +103,7 @@ const DemoModal = ({
               <button
                 type="button"
                 className="mb-3 mr-2 rounded-lg bg-olive px-5 py-2.5 text-center text-sm font-medium text-cream shadow-lg"
-                onClick={() => onClickConfirmButton()}
+                onClick={() => onClickConfirmButton(id)}
               >
                 Confirmar
               </button>
@@ -101,7 +115,7 @@ const DemoModal = ({
   );
 };
 
-export function useDemoModal({ title }: { title: string }) {
+export function useDemoModal({ title, id }: { title: string, id: number  }) {
   const [showDemoModal, setShowDemoModal] = useState(false);
 
   const DemoModalCallback = useCallback(() => {
@@ -110,9 +124,10 @@ export function useDemoModal({ title }: { title: string }) {
         showDemoModal={showDemoModal}
         setShowDemoModal={setShowDemoModal}
         title={title}
+        id={id}
       />
     );
-  }, [showDemoModal, setShowDemoModal, title]);
+  }, [showDemoModal, setShowDemoModal, title, id]);
 
   return useMemo(
     () => ({ setShowDemoModal, DemoModal: DemoModalCallback }),
